@@ -1,5 +1,6 @@
-import teleapi
+class BotError(Exception):
+    pass
 
 
-class UserError:
+class UserError(Exception):
     pass

@@ -1,0 +1,4 @@
+import teleapi
+
+
+class SearchError()
