@@ -1,11 +1,9 @@
 import teleapi
 from typing import Optional, List
+from ..track import Track
+from ..musical_object import MusicalObjectModel
 
-from ..track.obj import Track
-from ...services.service import BaseService
 
-
-class PlaylistModel(teleapi.orm.Model):
+class PlaylistModel(MusicalObjectModel):
     tracks: List[Track] = teleapi.orm.ListModelField(teleapi.orm.RelatedModelField(Track), default=[])
     image_url: Optional[str] = teleapi.orm.StringModelField(is_required=False)
-    service: BaseService = teleapi.orm.RelatedModelField(BaseService)

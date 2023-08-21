@@ -7,3 +7,11 @@ class SearchError(BotError):
 
 class SearchUserError(SearchError, UserError):
     pass
+
+
+class NotFoundUserError(SearchUserError):
+    pass
+
+
+class SearchFailedUserError(SearchUserError):
+    pass

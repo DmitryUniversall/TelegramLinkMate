@@ -28,7 +28,10 @@ class BaseService(ABC):
         ...
 
     async def search(self, query: str) -> Optional[Union['Track', 'Playlist']]:
-        pass
+        if "https://" in query:
+            return await self.get_from_url(query)
+        else:
+            return await self.get_from_name(query)
 
 
 class Service(BaseService, ABC):

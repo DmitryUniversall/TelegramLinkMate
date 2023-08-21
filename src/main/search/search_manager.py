@@ -23,10 +23,6 @@ class BaseSearchManager(ABC):
             if result.is_simular(query, service):
                 return result
 
-    @abstractmethod
-    async def find(self, query: str, service: str = None) -> SearchResult:
-        pass
-
     async def search(self, query: str, service: BaseService = None, use_cache: bool = True) -> Optional[SearchResult]:
         if use_cache and (result := self.find_cached(query, str(service))):
             return result
@@ -34,8 +30,14 @@ class BaseSearchManager(ABC):
         search_result = SearchResult(query, str(service))
 
         logger.debug(f"Start searching with parameters '{query}' (resultUUID: {search_result.uuid})")
+
         found = await service.search(query=query)
         search_result.result = found
+
         logger.debug(f"Successfully finished searching for query '{query}' (resultUUID: {search_result.uuid})")
 
         return search_result
+
+    @abstractmethod
+    async def find(self, query: str, service: str = None) -> SearchResult:
+        pass
