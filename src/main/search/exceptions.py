@@ -1,4 +1,9 @@
-import teleapi
+from src.exceptions import BotError, UserError
 
 
-class SearchError()
+class SearchError(BotError):
+    pass
+
+
+class SearchUserError(SearchError, UserError):
+    pass

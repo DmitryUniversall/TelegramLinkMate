@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 from typing import List, Optional
 from .search_result import SearchResult
 from .services.service import BaseService
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class BaseSearchManager(ABC):
@@ -28,12 +31,11 @@ class BaseSearchManager(ABC):
         if use_cache and (result := self.find_cached(query, str(service))):
             return result
 
-        # logger.debug(f"Start searching with parameters '{result.search_params}' (resultUUID: {result.uuid})")
-
-        found = await service.search(query=query)
         search_result = SearchResult(query, str(service))
-        search_result.result = found
 
-        # logger.debug(f"Successfully finished searching for query '{query}'. {len(result.results)} results was found (resultUUID: {result.uuid})")
+        logger.debug(f"Start searching with parameters '{query}' (resultUUID: {search_result.uuid})")
+        found = await service.search(query=query)
+        search_result.result = found
+        logger.debug(f"Successfully finished searching for query '{query}' (resultUUID: {search_result.uuid})")
 
         return search_result
