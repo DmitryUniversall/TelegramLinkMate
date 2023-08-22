@@ -76,8 +76,8 @@ async def to_track(*, raw_track: Dict[str, Any], variations: List[Track] = None)
         ],
         image_url=raw_track['thumbnail'],
         data_source=DataSource(
-            audio_source=[f["url"] for f in get_available_audio_sources_from_data(raw_track['formats'])],
-            video_source=[f["url"] for f in get_available_video_sources_from_data(raw_track['formats'])]
+            audio_source=get_available_audio_sources_from_data(raw_track['formats']),
+            video_source=get_available_video_sources_from_data(raw_track['formats'])
         ),
         service=youtube_service,
         variations=variations,
@@ -97,16 +97,22 @@ async def to_track_many(*, raw_tracks: Iterable[Dict[str, Any]]) -> List[Track]:
 
 def get_available_audio_sources_from_data(formats: dict) -> list:
     return list(
-        filter(
-            lambda x: x['format_id'] == project_settings.AVAILABLE_YOUTUBE_SOUND_FORMAT, formats
+        map(
+            lambda x: x['url'],
+            filter(
+                lambda x: x['format_id'] == project_settings.AVAILABLE_YOUTUBE_SOUND_FORMAT, formats
+            )
         )
     )
 
 
 def get_available_video_sources_from_data(formats: dict) -> list:
     return list(
-        filter(
-            lambda x: x['format_id'] == project_settings.AVAILABLE_YOUTUBE_VIDEO_FORMAT, formats
+        map(
+            lambda x: x['url'],
+            filter(
+                lambda x: x['format_id'] == project_settings.AVAILABLE_YOUTUBE_VIDEO_FORMAT, formats
+            )
         )
     )
 
