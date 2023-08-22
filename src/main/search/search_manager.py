@@ -1,13 +1,13 @@
-from abc import ABC, abstractmethod
 from typing import List, Optional
 from .search_result import SearchResult
 from .services.service import BaseService
+from .services import yandex_music_service, youtube_service
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-class BaseSearchManager(ABC):
+class BaseSearchManager:
     def __init__(self, max_cache_size: int = 100) -> None:
         self.__cache: List[SearchResult] = []
         self.max_cache_size = max_cache_size
@@ -23,9 +23,15 @@ class BaseSearchManager(ABC):
             if result.is_simular(query, service):
                 return result
 
-    async def search(self, query: str, service: BaseService = None, use_cache: bool = True) -> Optional[SearchResult]:
+    async def search(self, query: str, service: BaseService = None, use_cache: bool = True) -> SearchResult:
         if use_cache and (result := self.find_cached(query, str(service))):
             return result
+
+        if service is None:
+            if "music.yandex.ru" in query:
+                service = yandex_music_service
+            else:
+                service = youtube_service
 
         search_result = SearchResult(query, str(service))
 
@@ -38,6 +44,9 @@ class BaseSearchManager(ABC):
 
         return search_result
 
-    @abstractmethod
-    async def find(self, query: str, service: str = None) -> SearchResult:
-        pass
+
+class SearchManager(BaseSearchManager):
+    pass
+
+
+search_manager = SearchManager()

@@ -1,1 +1,1 @@
-from .service import YoutubeService
+from .service import YoutubeService, youtube_service

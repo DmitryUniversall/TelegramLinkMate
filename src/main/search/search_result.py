@@ -1,4 +1,4 @@
-from typing import List, Union, TYPE_CHECKING, Optional
+from typing import Union, TYPE_CHECKING, Optional
 from uuid import uuid4
 
 if TYPE_CHECKING:
@@ -14,11 +14,11 @@ class SearchResult:
         self._result = None
 
     @property
-    def result(self) -> Optional[List[Union[Track, Playlist]]]:
+    def result(self) -> Optional[Union['Track', 'Playlist']]:
         return self._result
 
     @result.setter
-    def result(self, value: List[Union[Track, Playlist]]) -> None:
+    def result(self, value: Union['Track', 'Playlist']) -> None:
         self._result = value
 
     def is_simular(self, query: str, service: str) -> bool:

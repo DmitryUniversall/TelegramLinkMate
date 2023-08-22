@@ -9,6 +9,7 @@ from src.main.search.exceptions import SearchFailedUserError
 from src.main.search.data_types.track import Track
 from src.main.search.data_types.author import Author
 from src.main.search.data_types.playlist import Playlist
+from src.main.search.data_types.data_source import DataSource
 from .service import yandex_music_service
 from teleapi import project_settings
 
@@ -75,14 +76,14 @@ async def to_track(*, raw_track: yandex_music.Track, variations: List[Track] = N
         title=raw_track.title,
         url=get_track_url(raw_track),
         duration=f'{raw_track.duration_ms // 60}:{raw_track.duration_ms % 60}',
-        image_url=f'https://{raw_track.cover_uri.replace("%%", "400x300")}',
         authors=[
             author_from_yandex_object(artist) for artist in raw_track.artists
         ],
-        lyrics=None,
-        audio_sources=[],  # await get_track_audio_sources(raw_track) if full_data else None    #  Url expired in 15 min
+        image_url=f'https://{raw_track.cover_uri.replace("%%", "400x300")}',
+        data_source=DataSource(),  # Url expired in 15 min
         service=yandex_music_service,
-        variations=variations
+        variations=variations,
+        raw=raw_track
     )
 
 
@@ -118,16 +119,25 @@ async def get_tracks_from_playlist(kind: int, username: str) -> Playlist:
     )
 
 
-async def get_track_from_name(query: str) -> Track:
-    tracks = await project_settings.YANDEX_MUSIC_CLIENT.search_by_name(query)
+async def get_track_from_name(name: str) -> Track:
+    tracks = await project_settings.YANDEX_MUSIC_CLIENT.search_by_name(name)
 
     return await to_track(
         raw_track=tracks[0],
-        variations=tracks[1:] if len(tracks) > 1 else None
+        variations=list(
+            await asyncio.gather(*[
+                to_track(raw_track=raw_track) for raw_track in tracks[1:]
+            ]) if len(tracks) > 1 else None
+        )
     )
 
 
 async def get_track_from_url(url: str) -> Track:
+    raw_track = await get_raw_track_from_url(url)
+    return await to_track(raw_track=raw_track, variations=None)
+
+
+async def get_raw_track_from_url(url: str) -> yandex_music.Track:
     data = {}
 
     if match := re.search(r"album/(\d+)/track/(\d+)/?$", url):
@@ -136,7 +146,7 @@ async def get_track_from_url(url: str) -> Track:
         raise SearchFailedUserError(f"Неверный формат ссылки: {url}")
 
     raw_track = (await project_settings.YANDEX_MUSIC_CLIENT.get_tracks(data))[0]
-    return await to_track(raw_track=raw_track, variations=None)
+    return raw_track
 
 
 async def get_track_audio_sources(track: yandex_music.Track) -> List[str]:

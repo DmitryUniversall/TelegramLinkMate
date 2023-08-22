@@ -1,8 +1,10 @@
 import re
-from typing import Union, List, TYPE_CHECKING, Optional
+from typing import Union, TYPE_CHECKING, Optional, Any
 from ..service import Service
 from src.main.search.exceptions import SearchFailedUserError
 import logging
+
+from ...data_types.data_source import DataSource
 
 logger = logging.getLogger(__name__)
 
@@ -34,25 +36,42 @@ class YandexMusicService(Service):
             logger.debug(f"Unknown url format: {url}")
             raise SearchFailedUserError(f'Неизвестный формат ссылки: {url}')
 
-    async def get_from_name(self, query: str) -> Union['Track', 'Playlist']:
+    async def get_from_name(self, name: str) -> Union['Track', 'Playlist']:
         from .search import get_track_from_name
 
         return await get_track_from_name(
-            query=query
+            name=name
         )
 
-    async def get_audio_sources(self, url: str) -> List[str]:
-        from .search import get_track_audio_sources
+    async def get_sources(self, url: str) -> DataSource:
+        from .search import get_track_audio_sources, get_raw_track_from_url
 
-        return await get_track_audio_sources(
-            track=await self.get_from_url(url)
+        raw = await get_raw_track_from_url(url)
+        return DataSource(
+            audio_source=await get_track_audio_sources(track=raw),
+            video_source=[]
         )
 
-    def get_lyrics(self, url: str) -> Optional[str]:
-        from .search import get_track_lyrics
+    async def get_lyrics(self, url: str) -> Optional[str]:
+        from .search import get_track_lyrics, get_raw_track_from_url
 
         return await get_track_lyrics(
-            track=await self.get_from_url(url)
+            track=await get_raw_track_from_url(url)
+        )
+
+    async def get_from_raw(self, raw: Any) -> 'Track':
+        from .search import to_track
+
+        return await to_track(
+            raw_track=raw
+        )
+
+    async def get_sources_from_raw(self, raw: Any) -> DataSource:
+        from .search import get_track_audio_sources
+
+        return DataSource(
+            audio_source=await get_track_audio_sources(raw),
+            video_source=[]
         )
 
 

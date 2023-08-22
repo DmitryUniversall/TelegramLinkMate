@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Union, Optional, List, TYPE_CHECKING
-from ..search_result import SearchResult
+from typing import Union, Optional, TYPE_CHECKING, Any
+
+from ..data_types.data_source import DataSource
 
 if TYPE_CHECKING:
     from ..data_types.track import Track
@@ -21,7 +22,15 @@ class BaseService(ABC):
         ...
 
     @abstractmethod
-    async def get_audio_sources(self, url: str) -> List[str]:
+    async def get_sources(self, url: str) -> DataSource:
+        ...
+
+    @abstractmethod
+    async def get_from_raw(self, raw: Any) -> 'Track':
+        ...
+
+    @abstractmethod
+    async def get_sources_from_raw(self, raw: Any) -> DataSource:
         ...
 
     async def get_lyrics(self, url: str) -> Optional[str]:
