@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 class TrackModel(MusicalObjectModel):
-    variations: List['Track'] = teleapi.orm.ListModelField(teleapi.orm.RelatedModelField('src.main.search.data_types.track.obj.Track'), is_required=False)
+    variations: List['Track'] = teleapi.orm.ListModelField(teleapi.orm.RelatedModelField('src.main.search.data_types.track.obj.Track'), default=[])
 
     title: str = teleapi.orm.StringModelField()
     authors: List[Author] = teleapi.orm.ListModelField(teleapi.orm.RelatedModelField(Author))

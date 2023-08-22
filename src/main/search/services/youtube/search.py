@@ -23,7 +23,7 @@ logger = logging.getLogger("src.music.search.YtdlpSearch")
 def fetch_track_data(query: str) -> dict:
     with yt_dlp.YoutubeDL(project_settings.YTDLP_OPTIONS) as ytdl:
         try:
-            return ytdl.extract_info(query if query.startswith("https://") else f"ytsearch3:{query}", download=False)
+            return ytdl.extract_info(query if query.startswith("https://") else f"ytsearch2:{query}", download=False)
         except DownloadError:
             raise SearchFailedUserError(f"По запросу '{query}' ничего не найдено. Видео не найдено/скрыто/не доступно")
 

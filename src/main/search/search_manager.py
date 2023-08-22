@@ -35,12 +35,12 @@ class BaseSearchManager:
 
         search_result = SearchResult(query, str(service))
 
-        logger.debug(f"Start searching with parameters '{query}' (resultUUID: {search_result.uuid})")
+        logger.debug(f"Start searching with parameters '{query}' [service: {service}] (resultUUID: {search_result.uuid})")
 
         found = await service.search(query=query)
         search_result.result = found
 
-        logger.debug(f"Successfully finished searching for query '{query}' (resultUUID: {search_result.uuid})")
+        logger.debug(f"Successfully finished searching for query '{query}' [service: {service}] (resultUUID: {search_result.uuid})")
 
         return search_result
 
