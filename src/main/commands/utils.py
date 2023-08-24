@@ -3,6 +3,7 @@ import asyncio
 from typing import Union
 from src.main.search.data_types.track import Track
 from src.main.search.data_types.playlist import Playlist
+from src.main.search.services import YandexMusicService
 from src.main.utils import strip_lines
 
 
@@ -15,7 +16,7 @@ async def send_chat_action(chat: teleapi.Chat, action: teleapi.ChatAction, inter
 async def get_query_dialog(executor: teleapi.BaseExecutor, chat: teleapi.Chat) -> str:
     while True:
         await chat.send_message(
-            text="Укажите примерное название или ссылку на Youtube видео/плейлист"
+            text="Укажите примерное название или ссылку видео/трек/плейлист/альбом"
         )
 
         _, data = await executor.wait_for(
@@ -52,17 +53,24 @@ async def send_search_result_message(message: teleapi.Message,
         variations_text = "\n\n".join(
             list(await asyncio.gather(*[format_track(track) for track in obj.variations[:max_variations]])))
 
+        message_text = f"<b>Вот, что я нашел по вашему запросу:</b>\n\n{track_text}\n\n{variations_text}"
+        message_photo = obj.image_url
+        message_parse_mode = teleapi.ParseMode.HTML
+
+        if isinstance(obj.service, YandexMusicService):
+            message_text += "\n\n<b>Внимание:</b>\nУчитывайте, что ссылки на скачивание с YandexMusic истекают всего через 15 минут!"
+
         if message_to_edit:
             await message_to_edit.edit_media(
                 media=teleapi.InputMediaPhoto(
-                    media=obj.image_url,
-                    caption=f"<b>Вот, что я нашел по вашему запросу:</b>\n\n{track_text}\n\n{variations_text}",
-                    parse_mode=teleapi.ParseMode.HTML
+                    media=message_photo,
+                    caption=message_text,
+                    parse_mode=message_parse_mode
                 )
             )
         else:
             await message.reply_photo(
-                photo=obj.image_url,
-                caption=f"<b>Вот, что я нашел по вашему запросу:</b>\n\n{track_text}\n\n{variations_text}",
-                parse_mode=teleapi.ParseMode.HTML,
+                photo=message_photo,
+                caption=message_text,
+                parse_mode=message_parse_mode
             )

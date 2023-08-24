@@ -1,12 +1,13 @@
 import teleapi
 from .utils import strip_lines
-from .commands import YandexCommand, YoutubeCommand
+from .commands import YandexCommand, YoutubeCommand, HelpCommand
 
 
 class MainExecutor(teleapi.Executor):
     __executor_commands__ = [
         YandexCommand,
-        YoutubeCommand
+        YoutubeCommand,
+        HelpCommand
     ]
 
     @teleapi.Executor.executor_command(name="start")

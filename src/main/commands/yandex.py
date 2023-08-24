@@ -1,14 +1,35 @@
 import asyncio
 
 import teleapi
-from .utils import get_query_dialog, send_chat_action, send_search_result_message
+
 from src.main.search import search_manager
 from src.main.search.services import yandex_music_service
+from .utils import get_query_dialog, send_chat_action, send_search_result_message
+from ..utils import strip_lines
 
 
 class YandexCommand(teleapi.Command):
     class Meta:
         name = 'yandex'
+        description = strip_lines(
+            """
+            <b>Поиск треков в Yandex Music</b>
+            
+            <b>Важно:</b>
+            <i>- Бот поддерживает треки (по названию и ссылке), плейлисты (по ссылке) и альбомы (по ссылке).</i>
+            <i>- Ссылки на скачивание с Yandex Music истекают через 15 минут</i>
+            
+            <b>Использование:</b>
+            /yandex
+            <i>А затем указать название/ссылку в следующем сообщении.</i>
+            
+            <b>ИЛИ</b>
+            
+            /yandex <i>Название трека/плейлиста или ссылка на него</i>
+            <i>(Например: <code>/yandex Believer</code>)</i>
+            """
+        )
+        photo = "https://tustreams.com/tu-streams/assets/img/logos/yandex-music.jpg"
 
     async def execute(self, message: teleapi.Message, **kwargs) -> None:
         query = " ".join(kwargs.get('parameters'))
