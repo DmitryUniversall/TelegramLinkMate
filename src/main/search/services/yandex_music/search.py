@@ -145,7 +145,7 @@ async def get_raw_track_from_url(url: str) -> yandex_music.Track:
     else:
         raise SearchFailedUserError(f"Неверный формат ссылки: {url}")
 
-    raw_track = (await project_settings.YANDEX_MUSIC_CLIENT.get_tracks(data))[0]
+    raw_track = (await project_settings.YANDEX_MUSIC_CLIENT.get_tracks(data, timeout=10))[0]
     return raw_track
 
 

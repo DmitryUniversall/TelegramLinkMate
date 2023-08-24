@@ -20,8 +20,14 @@ class MyYMClient(yandex_music.ClientAsync):
 
         return result.tracks.results
 
-    async def get_tracks(self, tracks_data: dict) -> List[yandex_music.Track]:
-        return await self.tracks([f'{track_id}:{album_id}' for album_id, track_id in tracks_data.items()])
+    async def get_tracks(self, tracks_data: dict, timeout: int = 5, attempts: int = 0) -> List[yandex_music.Track]:
+        if attempts == 5:
+            raise NotFoundUserError(f"Не удалось получить информацию о треке")
+
+        try:
+            return await self.tracks([f'{track_id}:{album_id}' for album_id, track_id in tracks_data.items()], timeout=timeout)
+        except yandex_music.exceptions.TimeOutError:
+            return await self.get_tracks(tracks_data, timeout, attempts + 1)
 
     async def get_album_tracks(self, album_id: int) -> Tuple[yandex_music.Album, List[yandex_music.Track]]:
         try:
