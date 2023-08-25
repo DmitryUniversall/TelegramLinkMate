@@ -21,6 +21,7 @@ class BaseSearchManager:
     def find_cached(self, query: str, service: str) -> Optional[SearchResult]:
         for result in self.__cache:
             if result.is_simular(query, service):
+                logger.debug(f"Found cached search result for ['{query}': {service}]")
                 return result
 
     async def search(self, query: str, service: BaseService = None, use_cache: bool = True) -> SearchResult:

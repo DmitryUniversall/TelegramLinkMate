@@ -1,7 +1,8 @@
 import asyncio
 
 import teleapi
-from .utils import get_query_dialog, send_chat_action, send_search_result_message
+from .utils import get_query_dialog, send_chat_action
+from .messages import send_search_result_message
 from src.main.search import search_manager
 from src.main.search.services import youtube_service
 from ..utils import strip_lines
@@ -48,4 +49,4 @@ class YoutubeCommand(teleapi.Command):
         found = await search_manager.search(query=query, service=youtube_service)
         chat_action_task.cancel()
 
-        await send_search_result_message(message, found.result, message_to_edit=loading_image)
+        await send_search_result_message(found, chat=message.chat, message_to_edit=loading_image)

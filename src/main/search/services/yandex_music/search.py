@@ -80,7 +80,10 @@ async def to_track(*, raw_track: yandex_music.Track, variations: List[Track] = N
             author_from_yandex_object(artist) for artist in raw_track.artists
         ],
         image_url=f'https://{raw_track.cover_uri.replace("%%", "400x300")}',
-        data_source=DataSource(),  # Url expired in 15 min
+        data_source=DataSource(
+            audio_source=await get_track_audio_sources(raw_track),
+            video_source=[]
+        ),
         service=yandex_music_service,
         variations=variations,
         raw=raw_track
@@ -119,7 +122,7 @@ async def get_tracks_from_playlist(kind: int, username: str) -> Playlist:
     )
 
 
-async def get_track_from_name(name: str) -> Track:
+async def get_track_from_name(name: str) -> Track:  # TODO: timeout
     tracks = await project_settings.YANDEX_MUSIC_CLIENT.search_by_name(name)
 
     return await to_track(
