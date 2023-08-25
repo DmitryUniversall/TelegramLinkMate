@@ -42,7 +42,7 @@ async def afetch_tracks_data(queries: List[str]) -> List[dict]:
     )
 
 
-def playlist_from_ytdlp_object(data: dict, tracks: list[Track] = None) -> Playlist:
+def playlist_from_ytdlp_object(data: dict, tracks: List[Track] = None) -> Playlist:
     playlist = Playlist(
         authors=[
             Author(

@@ -12,6 +12,7 @@ class SearchResult:
         self.service = service
         self.uuid = uuid4()
         self._result = None
+        self.is_cached = False
 
     @property
     def result(self) -> Optional[Union['Track', 'Playlist']]:

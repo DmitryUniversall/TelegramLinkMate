@@ -37,7 +37,8 @@ class SearchResultMessageView(teleapi.View):
 
     @teleapi.View.view_button(text='Я нашёл нужный трек/видео', row=0)
     async def right_track_button(self, callback_query: teleapi.CallbackQuery, **_) -> None:
-        search_manager.cache_result(self.search_result)
+        if not self.search_result.is_cached:
+            search_manager.cache_result(self.search_result)
 
         await self.message.edit_reply_markup(reply_markup=None)
         await callback_query.answer(text="Спасибо за отзыв!")

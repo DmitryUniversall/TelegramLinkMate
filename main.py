@@ -16,8 +16,15 @@ async def main():
 
     teleapi.project_settings.YANDEX_MUSIC_CLIENT = client
 
-    setup_teleapi_logger(console_log_level=logging.DEBUG)
-    setup_logger('src', console_log_level=logging.DEBUG)
+    setup_teleapi_logger(
+        logs_dir=teleapi.project_settings.TELEAPI_LOG_DIR,
+        console_log_level=logging.DEBUG if teleapi.project_settings.DEBUG else logging.INFO
+    )
+    setup_logger(
+        'src',
+        logs_dir=teleapi.project_settings.BOT_LOG_DIR,
+        console_log_level=logging.DEBUG
+    )
 
     bot = MusicalBOBBot(teleapi.LongPollingUpdater)
     await bot.run()

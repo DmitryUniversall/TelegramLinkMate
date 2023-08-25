@@ -16,6 +16,7 @@ class BaseSearchManager:
         if not search_result.result:
             raise ValueError("SearchResult has not 'result'")
 
+        search_result.is_cached = True
         self.__cache.append(search_result)
 
     def find_cached(self, query: str, service: str) -> Optional[SearchResult]:
