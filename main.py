@@ -18,11 +18,12 @@ async def main():
 
     setup_teleapi_logger(
         logs_dir=teleapi.project_settings.TELEAPI_LOG_DIR,
+        create_files=not teleapi.project_settings.DEBUG,
         console_log_level=logging.DEBUG if teleapi.project_settings.DEBUG else logging.INFO
     )
     setup_logger(
         'src',
-        logs_dir=teleapi.project_settings.BOT_LOG_DIR,
+        logs_dir=teleapi.project_settings.BOT_LOG_DIR if not teleapi.project_settings.DEBUG else None,
         console_log_level=logging.DEBUG
     )
 

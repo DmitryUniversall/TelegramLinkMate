@@ -58,7 +58,7 @@ def playlist_from_yandex_object(obj: Union[yandex_music.Album, yandex_music.Play
             service=yandex_music_service,
             authors=[author_from_yandex_object(yandex_playlist.owner)],
             title=yandex_playlist.title,
-            image_url=f'https://{yandex_playlist.cover.uri.replace("%%", "400x400")}' if yandex_playlist.cover.uri else "https://avatars.githubusercontent.com/u/10011346?v=4",
+            image_url=f'https://{yandex_playlist.cover.uri.replace("%%", "400x400")}' if yandex_playlist.cover.uri else None,
             url=f"https://music.yandex.ru/users/{yandex_playlist.owner.login}/playlists/{yandex_playlist.kind}"
         )
     else:
