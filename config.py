@@ -12,7 +12,7 @@ with open(cmd_args.bot_data, 'r') as file:
 
 # Bot
 DEBUG = cmd_args.debug
-API_TOKEN = BOT_DATA['token']
+API_TOKEN = BOT_DATA["debug" if DEBUG else "main"]['token']
 
 # Yandex Music
 YANDEX_MUSIC_TOKEN = BOT_DATA['yandex_music_token']
