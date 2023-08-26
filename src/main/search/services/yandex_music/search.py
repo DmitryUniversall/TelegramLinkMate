@@ -157,7 +157,9 @@ async def get_track_audio_sources(track: yandex_music.Track) -> List[str]:
         download_info = await project_settings.YANDEX_MUSIC_CLIENT.tracks_download_info(track.track_id, timeout=10)
         download_info = download_info[0]
 
-        return [await download_info.get_direct_link_async()]
+        link_data = await download_info.client.request.retrieve(download_info.download_info_url, timeout=10)
+
+        return [download_info._DownloadInfo__build_direct_link(link_data)]
     except IndexError as error:
         logger.debug(
             f"Failed to find audio source for track '{track.title} - {track.id}' [NOT FOUND]: {error}"
