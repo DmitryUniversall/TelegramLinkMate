@@ -6,7 +6,7 @@ from src.main.search import search_manager
 from src.main.search.services import yandex_music_service
 from .utils import get_query_dialog, send_chat_action
 from .messages import send_search_result_message
-from ..utils import strip_lines
+from ...utils.text import strip_lines
 
 
 class YandexCommand(teleapi.Command):

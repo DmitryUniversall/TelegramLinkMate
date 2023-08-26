@@ -1,5 +1,5 @@
 import teleapi
-from .utils import strip_lines
+from ..utils.text import strip_lines
 from .commands import YandexCommand, YoutubeCommand, HelpCommand
 
 

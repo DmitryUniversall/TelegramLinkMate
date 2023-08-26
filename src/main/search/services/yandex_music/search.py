@@ -154,7 +154,7 @@ async def get_raw_track_from_url(url: str) -> yandex_music.Track:
 
 async def get_track_audio_sources(track: yandex_music.Track) -> List[str]:
     try:
-        download_info = await track.get_download_info_async()
+        download_info = await project_settings.YANDEX_MUSIC_CLIENT.tracks_download_info(track.track_id, timeout=10)
         download_info = download_info[0]
 
         return [await download_info.get_direct_link_async()]

@@ -14,8 +14,10 @@ with open(cmd_args.bot_data, 'r') as file:
 DEBUG = cmd_args.debug
 API_TOKEN = BOT_DATA["debug" if DEBUG else "main"]['token']
 
+
 # Yandex Music
 YANDEX_MUSIC_TOKEN = BOT_DATA['yandex_music_token']
+
 
 # YTDLP
 YTDLP_OPTIONS = {
@@ -24,14 +26,18 @@ YTDLP_OPTIONS = {
     "quiet": True
 }
 
+# YouTube formats
 AVAILABLE_YOUTUBE_SOUND_FORMAT = "140"
 AVAILABLE_YOUTUBE_VIDEO_FORMAT = "22"
+
 
 # Logs
 # Папки для логов
 BOT_LOGS_DIR = os.path.join(ROOT_DIR, 'logs', 'bot')
-TELEAPI_LOGS_DIR = os.path.join(ROOT_DIR, 'logs', 'teleapi')
 
 # Папки логов данного процесса
-BOT_LOG_DIR = os.path.join(BOT_LOGS_DIR, datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
-TELEAPI_LOG_DIR = os.path.join(TELEAPI_LOGS_DIR, datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+PROCESS_LOG_DIR = os.path.join(BOT_LOGS_DIR, datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+
+
+# Other
+OWNER_CHAT_ID = 901655683

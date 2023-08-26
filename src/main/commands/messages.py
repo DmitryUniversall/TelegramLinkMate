@@ -3,7 +3,7 @@ from typing import List
 from src.main.search.data_types.track import Track
 from src.main.search.data_types.playlist import Playlist
 from src.main.search.services import YandexMusicService
-from src.main.utils import strip_lines
+from src.utils.text import strip_lines
 from src.main.search import search_manager, SearchResult
 import teleapi
 import asyncio
