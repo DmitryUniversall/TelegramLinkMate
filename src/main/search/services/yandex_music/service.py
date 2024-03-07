@@ -4,13 +4,13 @@ from ..service import Service
 from src.main.search.exceptions import SearchFailedUserError
 import logging
 
-from ...data_types.data_source import DataSource
+from src.main.search.data_types.data_source import DataSource
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from ...data_types.track import Track
-    from ...data_types.playlist import Playlist
+    from src.main.search.data_types.track import Track
+    from src.main.search.data_types.playlist import Playlist
 
 
 class YandexMusicService(Service):
@@ -20,7 +20,7 @@ class YandexMusicService(Service):
     async def get_from_url(self, url: str) -> Union['Track', 'Playlist']:
         from .search import get_track_from_url, get_tracks_from_album, get_tracks_from_playlist
 
-        if re.search(r"album/\d+/track/\d+/?$", url):
+        if re.search(r"album/\d+/track/\d+/?", url):
             return await get_track_from_url(
                 url=url
             )
@@ -28,7 +28,7 @@ class YandexMusicService(Service):
             return await get_tracks_from_playlist(
                 int(match.group(2)), match.group(1)
             )
-        elif match := re.search(r"album/(\d+)/?$", url):
+        elif match := re.search(r"album/(\d+)/?", url):
             return await get_tracks_from_album(
                 int(match.group(1))
             )

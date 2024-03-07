@@ -1,0 +1,3 @@
+from .model import TelegramBotCommandScopeDefaultModel
+from .obj import TelegramBotCommandScopeDefault
+from .serializer import TelegramBotCommandScopeDefaultSerializer

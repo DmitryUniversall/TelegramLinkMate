@@ -1,0 +1,1 @@
+from .teleapi import TeleapiError

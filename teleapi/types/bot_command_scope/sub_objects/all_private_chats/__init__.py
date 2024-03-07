@@ -1,0 +1,3 @@
+from .model import TelegramBotCommandScopeAllPrivateChatsModel
+from .obj import TelegramBotCommandScopeAllPrivateChats
+from .serializer import TelegramBotCommandScopeAllPrivateChatsSerializer

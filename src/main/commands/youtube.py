@@ -5,7 +5,7 @@ from .utils import get_query_dialog, send_chat_action
 from .messages import send_search_result_message
 from src.main.search import search_manager
 from src.main.search.services import youtube_service
-from ...utils.text import strip_lines
+from src.core.utils.text import strip_lines
 
 
 class YoutubeCommand(teleapi.Command):

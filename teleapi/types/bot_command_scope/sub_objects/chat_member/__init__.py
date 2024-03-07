@@ -1,0 +1,3 @@
+from .model import TelegramBotCommandScopeChatMemberModel
+from .obj import TelegramBotCommandScopeChatMember
+from .serializer import TelegramBotCommandScopeChatMemberSerializer

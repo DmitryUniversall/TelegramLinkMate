@@ -1,11 +1,12 @@
-from src.exceptions import BotError, UserError
+from src.core.exceptions import BaseBotError
+from src.main.exceptions import ErrorMessageException
 
 
-class SearchError(BotError):
+class SearchError(BaseBotError):
     pass
 
 
-class SearchUserError(SearchError, UserError):
+class SearchUserError(SearchError, ErrorMessageException):
     pass
 
 

@@ -6,7 +6,7 @@ from src.main.search import search_manager
 from src.main.search.services import yandex_music_service
 from .utils import get_query_dialog, send_chat_action
 from .messages import send_search_result_message
-from ...utils.text import strip_lines
+from src.core.utils.text import strip_lines
 
 
 class YandexCommand(teleapi.Command):
@@ -30,7 +30,7 @@ class YandexCommand(teleapi.Command):
             <i>(Например: <code>/yandex Believer</code>)</i>
             """
         )
-        photo = "https://tustreams.com/tu-streams/assets/img/logos/yandex-music.jpg"
+        photo = "https://img.championat.com/s/1350x900/news/big/b/q/yandeks-muzyka-perestala-rabotat-po-vsej-rossii_16775809631928139206.jpg"
 
     async def execute(self, message: teleapi.Message, **kwargs) -> None:
         query = " ".join(kwargs.get('parameters'))

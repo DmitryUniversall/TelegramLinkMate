@@ -1,0 +1,3 @@
+from .model import TelegramBotCommandScopeAllChatAdministratorsModel
+from .obj import TelegramBotCommandScopeAllChatAdministrators
+from .serializer import TelegramBotCommandScopeAllChatAdministratorsSerializer

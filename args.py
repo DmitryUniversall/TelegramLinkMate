@@ -1,7 +1,17 @@
 import argparse
+from teleapi.core.project_state import ProjectState
 
-parser = argparse.ArgumentParser(description='Telegram bot')
-parser.add_argument('-bot_data', required=True, help='Path to file with base bot data (like token and etc.)')
-parser.add_argument('--debug', default=False, action=argparse.BooleanOptionalAction)
+# Create parser instance
+_parser = argparse.ArgumentParser(description='Telegram PoisonHeart bot')
 
-cmd_args = parser.parse_args()
+# Add arguments
+_parser.add_argument(
+    '--state',
+    type=ProjectState,
+    choices=list(ProjectState),
+    help='Specify the state (choose from {})'.format('/'.join([e.value for e in ProjectState])),
+    default=ProjectState.DEBUG
+)
+
+# Parse
+cmd_args = _parser.parse_args()

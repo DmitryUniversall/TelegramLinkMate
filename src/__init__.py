@@ -1,1 +1,1 @@
-from .bot import MusicalBOBBot
+from .bot import LinkmateBot

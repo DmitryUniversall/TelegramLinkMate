@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  bot_main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      - linkmate:/usr/src/app/logs/
+
+    command: python run.py --state production
+
+volumes:
+  linkmate:

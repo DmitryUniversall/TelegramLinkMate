@@ -3,7 +3,7 @@ from typing import List
 from src.main.search.data_types.track import Track
 from src.main.search.data_types.playlist import Playlist
 from src.main.search.services import YandexMusicService
-from src.utils.text import strip_lines
+from src.core.utils.text import strip_lines
 from src.main.search import search_manager, SearchResult
 import teleapi
 import asyncio
@@ -35,14 +35,14 @@ class SearchResultMessageView(teleapi.View):
         self.max_tracks = max_tracks
         self.base_message_text = f"<b>Вот, что я нашел по вашему запросу:</b>\n\n"
 
-    @teleapi.View.view_button(text='Я нашёл нужный трек/видео', row=0)
-    async def right_track_button(self, callback_query: teleapi.CallbackQuery, button: 'teleapi.InlineViewButton') -> None:
-        if not self.search_result.is_cached:
-            search_manager.cache_result(self.search_result)
-
-        self.unregister_button(button)
-        await self.message.edit_reply_markup(view=self)
-        await callback_query.answer(text="Спасибо за отзыв!")
+    # @teleapi.View.view_button(text='Я нашёл нужный трек/видео', row=0)
+    # async def right_track_button(self, callback_query: teleapi.CallbackQuery, button: 'teleapi.InlineViewButton') -> None:
+    #     if not self.search_result.is_cached:
+    #         search_manager.cache_result(self.search_result)
+    #
+    #     self.unregister_button(button)
+    #     await self.message.edit_reply_markup(view=self)
+    #     await callback_query.answer(text="Спасибо за отзыв!")
 
 
 class PlaylistMessageView(SearchResultMessageView):
